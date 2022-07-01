@@ -1,14 +1,8 @@
 import { MinLength } from 'class-validator';
 
-export class CreateUserDto {
+export class SignInDto {
   @MinLength(2)
   username: string;
-
-  @MinLength(2)
-  firstName: string;
-
-  @MinLength(2)
-  lastName: string;
 
   @MinLength(2)
   password: string;

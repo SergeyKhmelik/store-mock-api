@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,29 +10,39 @@ import { Model } from 'mongoose';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  create(createUserDto: CreateUserDto): Promise<User> {
-    return this.userModel.create({
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const passwordHash = await bcrypt.hash(createUserDto.password, await bcrypt.genSalt());
+
+    const createdModel = await this.userModel.create({
       username: createUserDto.username,
       firstName: createUserDto.firstName,
       lastName: createUserDto.lastName,
-      passwordHash: createUserDto.password,
+      password: passwordHash,
     });
+
+    const result: User = createdModel.toJSON();
+    delete result.password;
+    return result;
   }
 
   findAll() {
     return this.userModel.find();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.userModel.findById(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  findByUsername(username: string, withPassword = false) {
+    return this.userModel.findOne({ username }).select(withPassword ? '+password' : '');
+  }
+
+  update(id: string, updateUserDto: UpdateUserDto) {
     delete updateUserDto.password;
     return this.userModel.updateOne({ id }, updateUserDto);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.userModel.deleteOne({ id });
   }
 }
