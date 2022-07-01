@@ -4,23 +4,25 @@ import { SignInDto } from './dto/sign-in.dto';
 import { User } from '../users/user.schema';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { TokenContent, TokenPair } from './types';
-import { ACCESS_SECRET, ACCESS_TOKEN_LIFE_SECONDS, REFRESH_SECRET, REFRESH_TOKEN_LIFE_SECONDS } from '../constants';
+import { ACCESS_TOKEN_LIFE_SECONDS, REFRESH_TOKEN_LIFE_SECONDS } from './constants';
+import { ConfigService } from '@nestjs/config';
+import { SimpleUser } from '../users/types';
 
 @Injectable()
 export class AuthenticationService {
+  constructor(private readonly jwtService: JwtService, private readonly configService: ConfigService) {}
+
   private accessTokenOptions: JwtSignOptions = {
     expiresIn: ACCESS_TOKEN_LIFE_SECONDS,
-    secret: ACCESS_SECRET,
+    secret: this.configService.getOrThrow<string>('ACCESS_SECRET'),
   };
 
   private refreshTokenOptions: JwtSignOptions = {
     expiresIn: REFRESH_TOKEN_LIFE_SECONDS,
-    secret: REFRESH_SECRET,
+    secret: this.configService.getOrThrow<string>('REFRESH_SECRET'),
   };
 
-  constructor(private jwtService: JwtService) {}
-
-  private generateTokenPair = (user: Omit<User, 'password'>): TokenPair => {
+  private generateTokenPair = (user: SimpleUser): TokenPair => {
     return {
       accessToken: this.jwtService.sign(user, this.accessTokenOptions),
       refreshToken: this.jwtService.sign(user, this.refreshTokenOptions),
@@ -35,7 +37,7 @@ export class AuthenticationService {
     }
 
     const { password, ...tokenData } = user;
-    return this.generateTokenPair(tokenData as Omit<User, 'password'>);
+    return this.generateTokenPair(tokenData as SimpleUser);
   }
 
   refreshToken(refreshToken: string): TokenPair {

@@ -5,6 +5,7 @@ export const DEFAULT_SCHEMA_OPTIONS: SchemaOptions = {
     virtuals: true,
     versionKey: false,
     transform: (doc, ret) => {
+      ret.id = ret._id;
       delete ret._id;
     },
   },

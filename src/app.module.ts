@@ -1,14 +1,24 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { MONGO_UI } from './constants';
+import { MongooseModuleFactoryOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 
 @Module({
-  imports: [UsersModule, MongooseModule.forRoot(MONGO_UI), AuthenticationModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true, cache: true }),
+    MongooseModule.forRootAsync({
+      useFactory: (configService: ConfigService): MongooseModuleFactoryOptions => ({
+        uri: configService.getOrThrow('DATABASE_URI'),
+      }),
+      inject: [ConfigService],
+    }),
+    UsersModule,
+    AuthenticationModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

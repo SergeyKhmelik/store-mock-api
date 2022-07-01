@@ -1,0 +1,2 @@
+export const ACCESS_TOKEN_LIFE_SECONDS = 300;
+export const REFRESH_TOKEN_LIFE_SECONDS = 3600;

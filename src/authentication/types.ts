@@ -1,6 +1,6 @@
-import { User } from '../users/user.schema';
+import { SimpleUser } from '../users/types';
 
-export interface TokenContent extends Omit<User, 'password'> {
+export interface TokenContent extends SimpleUser {
   /* expires at: timestamp */
   exp: number;
   /* Issued at: timestamp */

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { UsersService } from '../users/users.service';
@@ -6,6 +6,7 @@ import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { Public } from './decorators/public.decorator';
 import { TokenPair } from './types';
 import { SignUpDto } from './dto/sign-up.dto';
+import { UserDocument } from '../users/user.schema';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -37,5 +38,10 @@ export class AuthenticationController {
   @Post('refresh-token')
   async refreshToken(@Body() refreshTokenDto: RefreshTokenDto): Promise<TokenPair> {
     return this.authenticationService.refreshToken(refreshTokenDto.refreshToken);
+  }
+
+  @Get('profile')
+  async getProfile(@Request() req): Promise<UserDocument> {
+    return this.usersService.findOne(req.user.id);
   }
 }
