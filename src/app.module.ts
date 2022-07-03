@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { MongooseModuleFactoryOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
+import { SupportModule } from './support/support.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MongooseModuleFactoryOptions } from '@nestjs/mongoose/dist/interfaces/m
     }),
     UsersModule,
     AuthenticationModule,
+    SupportModule,
   ],
   controllers: [],
   providers: [],
