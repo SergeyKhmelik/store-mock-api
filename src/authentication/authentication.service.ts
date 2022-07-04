@@ -1,12 +1,13 @@
 import * as bcrypt from 'bcrypt';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { SignInDto } from './dto/sign-in.dto';
-import { User } from '../users/user.schema';
+import { User } from '../users/user.entity';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { TokenContent, TokenPair } from './types';
+import { TokenContent } from './types';
 import { ACCESS_TOKEN_LIFE_SECONDS, REFRESH_TOKEN_LIFE_SECONDS } from './constants';
 import { ConfigService } from '@nestjs/config';
 import { SimpleUser } from '../users/types';
+import { TokenPair } from './dto/token-pair.dto';
 
 @Injectable()
 export class AuthenticationService {

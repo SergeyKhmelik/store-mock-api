@@ -4,10 +4,12 @@ import { SignInDto } from './dto/sign-in.dto';
 import { UsersService } from '../users/users.service';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { Public } from './decorators/public.decorator';
-import { TokenPair } from './types';
 import { SignUpDto } from './dto/sign-up.dto';
-import { UserDocument } from '../users/user.schema';
+import { User } from '../users/user.entity';
+import { ApiTags } from '@nestjs/swagger';
+import { TokenPair } from './dto/token-pair.dto';
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthenticationController {
   constructor(
@@ -41,7 +43,7 @@ export class AuthenticationController {
   }
 
   @Get('profile')
-  async getProfile(@Request() req): Promise<UserDocument> {
+  async getProfile(@Request() req): Promise<User> {
     return this.usersService.findOne(req.user.id);
   }
 }

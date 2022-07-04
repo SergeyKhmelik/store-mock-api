@@ -6,8 +6,3 @@ export interface TokenContent extends SimpleUser {
   /* Issued at: timestamp */
   iat: number;
 }
-
-export interface TokenPair {
-  accessToken: string;
-  refreshToken: string;
-}
