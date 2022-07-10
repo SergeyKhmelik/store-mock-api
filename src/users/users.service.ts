@@ -10,7 +10,7 @@ import { Model } from 'mongoose';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto) {
     const passwordHash = await bcrypt.hash(createUserDto.password, await bcrypt.genSalt());
 
     const createdModel = await this.userModel.create({
@@ -43,6 +43,6 @@ export class UsersService {
   }
 
   remove(id: string) {
-    return this.userModel.deleteOne({ id });
+    return this.userModel.findByIdAndRemove(id);
   }
 }

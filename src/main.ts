@@ -9,6 +9,7 @@ const setupSwagger = (app: INestApplication): void => {
     .setTitle('Store mock example')
     .setDescription('Mock API for online store')
     .setVersion('1.0')
+    .addBearerAuth({ bearerFormat: 'JWT', type: 'http', description: 'Put your authorization token here' })
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
@@ -19,6 +20,7 @@ async function bootstrap() {
 
   // adding validation to all requests
   app.useGlobalPipes(new ValidationPipe());
+  // app.useGlobalFilters(new MongoExceptionFilter());
 
   const configService = app.get(ConfigService);
   const port = configService.get('PORT');

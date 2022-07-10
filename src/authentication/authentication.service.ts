@@ -3,11 +3,11 @@ import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/
 import { SignInDto } from './dto/sign-in.dto';
 import { User } from '../users/user.entity';
 import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { TokenContent } from './types';
 import { ACCESS_TOKEN_LIFE_SECONDS, REFRESH_TOKEN_LIFE_SECONDS } from './constants';
 import { ConfigService } from '@nestjs/config';
-import { SimpleUser } from '../users/types';
 import { TokenPair } from './dto/token-pair.dto';
+import { SimpleUser } from '../users/dto/simple-user.dto';
+import { TokenContent } from './dto/token-content.dto';
 
 @Injectable()
 export class AuthenticationService {

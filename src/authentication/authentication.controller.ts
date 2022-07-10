@@ -5,11 +5,11 @@ import { UsersService } from '../users/users.service';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { Public } from './decorators/public.decorator';
 import { SignUpDto } from './dto/sign-up.dto';
-import { User } from '../users/user.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { TokenPair } from './dto/token-pair.dto';
+import { SimpleUser } from '../users/dto/simple-user.dto';
 
-@ApiTags('Auth')
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthenticationController {
   constructor(
@@ -42,8 +42,9 @@ export class AuthenticationController {
     return this.authenticationService.refreshToken(refreshTokenDto.refreshToken);
   }
 
+  @ApiBearerAuth()
   @Get('profile')
-  async getProfile(@Request() req): Promise<User> {
-    return this.usersService.findOne(req.user.id);
+  async getProfile(@Request() req) {
+    return this.usersService.findOne(req.user.id) as unknown as Promise<SimpleUser>;
   }
 }

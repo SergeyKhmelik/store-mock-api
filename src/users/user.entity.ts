@@ -9,17 +9,20 @@ export class User {
   @Prop()
   id: string;
 
-  @Prop()
+  @Prop({ isRequired: true, minlength: 2, unique: true })
   username: string;
 
-  @Prop()
+  @Prop({ isRequired: true, minlength: 2 })
   firstName: string;
 
-  @Prop()
+  @Prop({ isRequired: true, minlength: 2 })
   lastName: string;
 
   @Prop({ select: false })
   password: string;
+
+  @Prop()
+  avatar: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
