@@ -5,7 +5,7 @@ import { UsersService } from '../users/users.service';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { Public } from './decorators/public.decorator';
 import { SignUpDto } from './dto/sign-up.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { TokenPair } from './dto/token-pair.dto';
 import { SimpleUser } from '../users/dto/simple-user.dto';
 
@@ -42,7 +42,6 @@ export class AuthenticationController {
     return this.authenticationService.refreshToken(refreshTokenDto.refreshToken);
   }
 
-  @ApiBearerAuth()
   @Get('profile')
   async getProfile(@Request() req) {
     return this.usersService.findOne(req.user.id) as unknown as Promise<SimpleUser>;

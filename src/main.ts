@@ -13,7 +13,7 @@ const setupSwagger = (app: INestApplication): void => {
     .addBearerAuth({ bearerFormat: 'JWT', type: 'http', description: 'Put your authorization token here' })
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('', app, document);
 };
 
 async function bootstrap() {

@@ -7,6 +7,8 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { MongooseModuleFactoryOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 import { SupportModule } from './support/support.module';
 import { CategoryModule } from './category/category.module';
+import { ProductsModule } from './products/products.module';
+import { SeedsModule } from './seeds/seeds.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { CategoryModule } from './category/category.module';
     AuthenticationModule,
     SupportModule,
     CategoryModule,
+    ProductsModule,
+    SeedsModule,
   ],
   controllers: [],
   providers: [],
