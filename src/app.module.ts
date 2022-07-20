@@ -9,6 +9,7 @@ import { SupportModule } from './support/support.module';
 import { CategoryModule } from './category/category.module';
 import { ProductsModule } from './products/products.module';
 import { SeedsModule } from './seeds/seeds.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SeedsModule } from './seeds/seeds.module';
     CategoryModule,
     ProductsModule,
     SeedsModule,
+    ReviewsModule,
   ],
   controllers: [],
   providers: [],

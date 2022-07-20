@@ -18,7 +18,7 @@ export class UsersController {
 
   @Get()
   findAll() {
-    return this.usersService.findAll() as unknown as Promise<Array<SimpleUser>>;
+    return this.usersService.findAll() as unknown as Promise<SimpleUser[]>;
   }
 
   @Get(':id')
