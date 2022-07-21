@@ -41,21 +41,35 @@ export class ReviewsService {
     return this.reviewModel.findById(id);
   }
 
-  update(id: string, updateReviewDto: UpdateReviewDto, productId: string, requestUser: SimpleUser) {
-    return this.reviewModel.findOneAndUpdate<Review>(
-      {
-        id: id,
-        product: productId,
-        author: requestUser.id,
-      },
-      updateReviewDto,
-      {
-        upsert: false,
-      },
-    );
+  async update(id: string, updateReviewDto: UpdateReviewDto, productId: string, requestUser: SimpleUser) {
+    const review = await this.reviewModel.findById<ReviewDocument>(id);
+
+    if ((review.author as unknown as string) !== requestUser.id) {
+      throw new HttpException('You cannot edit other reviews.', HttpStatus.BAD_REQUEST);
+    }
+
+    if ((review.product as unknown as string) !== productId) {
+      throw new HttpException('The review does not belong to this product.', HttpStatus.BAD_REQUEST);
+    }
+
+    review.rate = updateReviewDto.rate;
+    review.reviewMessage = updateReviewDto.reviewMessage;
+    review.images = updateReviewDto.images;
+
+    return review.save();
   }
 
-  remove(productId: string, id: string, requestUser: SimpleUser) {
+  async remove(productId: string, id: string, requestUser: SimpleUser) {
+    const review = await this.reviewModel.findById<ReviewDocument>(id);
+
+    if ((review.product as unknown as string) !== productId) {
+      throw new HttpException('The review does not belong to this product.', HttpStatus.BAD_REQUEST);
+    }
+
+    if ((review.author as unknown as string) !== requestUser.id) {
+      throw new HttpException('You cannot remove other reviews.', HttpStatus.BAD_REQUEST);
+    }
+
     return this.reviewModel.findOneAndRemove<Review>({
       id: id,
       product: productId,

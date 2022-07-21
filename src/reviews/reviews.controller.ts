@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Request } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Public } from '../authentication/decorators/public.decorator';
 import { ReviewsService } from './reviews.service';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -11,6 +11,7 @@ import { SimpleUser } from '../users/dto/simple-user.dto';
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
+  @ApiBearerAuth()
   @Post()
   create(@Param('productId') productId: string, @Body() createReviewDto: CreateReviewDto, @Request() req) {
     const requestUser = req.user as SimpleUser;
@@ -28,6 +29,7 @@ export class ReviewsController {
     return this.reviewsService.findOne(id);
   }
 
+  @ApiBearerAuth()
   @Patch(':id')
   update(
     @Param('productId') productId: string,
@@ -39,6 +41,7 @@ export class ReviewsController {
     return this.reviewsService.update(id, updateReviewDto, productId, requestUser);
   }
 
+  @ApiBearerAuth()
   @Delete(':id')
   remove(@Param('productId') productId: string, @Param('id') id: string, @Request() req) {
     const requestUser = req.user as SimpleUser;
