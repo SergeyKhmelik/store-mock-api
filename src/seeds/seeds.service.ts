@@ -17,6 +17,7 @@ export class SeedsService {
   ) {}
 
   public async seedClients() {
+    await this.reviewModel.deleteMany({});
     await this.userModel.deleteMany({});
     return this.userModel.insertMany(await generateUsers());
   }

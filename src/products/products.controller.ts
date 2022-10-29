@@ -5,7 +5,7 @@ import { Public } from '../authentication/decorators/public.decorator';
 import { ProductFilterDto } from './dto/product-filter.dto';
 import { ProductsService } from './products.service';
 import { PaginatedResponse } from '../utils/pagination.utils';
-import { SimpleProduct } from './product.entity';
+import { SimpleRatedProduct } from './product.entity';
 
 @ApiTags('Products')
 @Controller('products')
@@ -14,8 +14,8 @@ export class ProductsController {
 
   @Public()
   @Get()
-  findAll(@Query() filters: ProductFilterDto): Promise<PaginatedResponse<SimpleProduct>> {
-    return this.productsService.findAll(filters);
+  findAll(@Query() filters: ProductFilterDto): Promise<PaginatedResponse<SimpleRatedProduct>> {
+    return this.productsService.findAllRated(filters);
   }
 
   @Public()

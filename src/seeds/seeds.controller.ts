@@ -1,6 +1,6 @@
 import { Controller, Post } from '@nestjs/common';
 import { SeedsService } from './seeds.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Public } from '../authentication/decorators/public.decorator';
 
 @ApiTags('Seeder')
@@ -8,6 +8,9 @@ import { Public } from '../authentication/decorators/public.decorator';
 export class SeedsController {
   constructor(private readonly seedsService: SeedsService) {}
 
+  @ApiOperation({
+    description: 'Replaces all clients and generates new ones. Removes all reviews as well.',
+  })
   @Public()
   @Post('clients')
   seedClients() {

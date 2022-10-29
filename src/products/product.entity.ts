@@ -6,6 +6,10 @@ export type ProductDocument = Product & Document;
 
 export type SimpleProduct = Omit<Product, 'description'>;
 
+export interface SimpleRatedProduct extends SimpleProduct {
+  rating: number;
+}
+
 export enum ProductSizes {
   XXS = 'XXS',
   XS = 'XS',
